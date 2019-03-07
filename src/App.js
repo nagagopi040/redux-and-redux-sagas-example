@@ -1,28 +1,53 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { connect } from 'react-redux';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+import { fetchUsers } from "./sagas/actions";
+import { bindActionCreators } from 'redux';
+
+class App extends Component {  
+ 	componentDidMount() {
+    const { fetchUsers } = this.props;
+    fetchUsers();
+  }
+  
+	render() {
+    const { users } = this.props
+    console.log(this.props);
+		return (
+				<table>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Repos URL</th>
+            <th>Site Admin</th>
+          </tr>
+          {users.map( (user, index) => {
+            if(index%2 === 0){
+              return(
+                <tr>
+                  <td>{user.id}</td>
+                  <td>{user.login}</td>
+                  <td>{user.repos_url}</td>
+                  <td>{user.site_admin ? "YES" : "NO"}</td>
+                </tr>
+              )
+            } else return null;
+          })}
+        </table>
+		);
+	}
+}
+
+const mapStateToProps = (state) => {
+  return {
+    users: state.users
   }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchUsers : () => bindActionCreators(fetchUsers,dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
