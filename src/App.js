@@ -6,8 +6,7 @@ import { bindActionCreators } from 'redux';
 
 class App extends Component {  
  	componentDidMount() {
-    const { fetchUsers } = this.props;
-    fetchUsers();
+    this.props.fetchUsers();
   }
   
 	render() {
@@ -38,16 +37,12 @@ class App extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
-  return {
-    users: state.users
-  }
-}
+const mapStateToProps = (state) => ({
+  users : state.userReducers.users
+})
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchUsers : () => bindActionCreators(fetchUsers,dispatch)
-  }
-}
+const mapDispatchToProps = (dispatch) => ({
+  fetchUsers: bindActionCreators(fetchUsers, dispatch),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

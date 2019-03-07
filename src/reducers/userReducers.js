@@ -2,7 +2,8 @@ import { FETCH_USERS, FETCH_USERS_FAILED, FETCH_USERS_SUCCEDED } from './../saga
 
 const initialState = {
 	requesting: null,
-	requested: null
+	requested: null,
+	users: []
 };
 
 export default function (state = initialState, action) {
